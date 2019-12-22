@@ -12,15 +12,6 @@ class Round extends Piece {
   @override
   Widget pieceShapeWidget() {
     return RoundWidget(this);
-    /*
-    return Container(
-      child: Text("R " + shapeIndex.toString()),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: getBorderRadius(),
-      ),
-    );
-     */
   }
 
   /// this is piece of square, 3 neighbor must fit to say Piece is OK
@@ -31,7 +22,7 @@ class Round extends Piece {
     int fittedPieceCount = 0;
 
     GridHelper.neighborVectors.forEach((neighborVector) {
-      // print(neighborVector.toString());
+
       // get neighbor index on flatten pieces array
       Vector gridPosition = getGridPosition();
 
@@ -45,15 +36,7 @@ class Round extends Piece {
         Piece neighborPiece = game.pieces[neighborIndex];
 
         if (isNeighborPieceFit(neighborVector, neighborPiece)) {
-          // print("FIT " + piece.pieceIndex.toString());
           fittedPieceCount++;
-        } else {
-          /*if(shapeIndex == 1){
-            print("NO FIT " +
-                neighborVector.toString() + " " +
-                toString() + " => " + neighborPiece.toString()
-            );
-          }*/
         }
       }
     });
@@ -63,7 +46,7 @@ class Round extends Piece {
 
   @override
   String toString() {
-    return "";//"""R " + super.toString();
+    return "";
   }
 
   BorderRadius getBorderRadius() {
