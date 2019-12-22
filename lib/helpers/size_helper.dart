@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart';
 
-/*
-HEADER GEİGHT ANA SAYFA VE GAME SCREEN DE FARKLI YORUMLANIYOR
-ANA SAYFADA ALİGN CENTER VAR
-
- */
-
 class SizeHelper{
   final BuildContext context;
 

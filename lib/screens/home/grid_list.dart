@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:puzzle/screens/game/game_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class GridList extends StatelessWidget {
+class GridList extends StatefulWidget {
   final int dimension;
-  final List<int> _levels = List.generate(10, (i) => i + 1); // no zero
 
   GridList({Key key, this.dimension}) : super(key: key);
+
+  @override
+  _GridListState createState() => _GridListState();
+}
+
+class _GridListState extends State<GridList> {
+  final List<int> _levels = List.generate(4, (i) => i + 1);
+
+  Future<int> getScore(dimension, level) async {
+    String key = dimension.toString() + "-" + level.toString();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    return prefs.getInt(key);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +43,12 @@ class GridList extends StatelessWidget {
                 ),
               ),
               child: Center(
-                  child:
-                      Text(dimension.toString() + "X" + dimension.toString())),
+                child: Text(
+                  widget.dimension.toString() +
+                      "X" +
+                      widget.dimension.toString(),
+                ),
+              ),
             ),
           ),
           Container(
@@ -52,38 +70,81 @@ class GridList extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: _levels.map((level) {
                     // CELL
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 4),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => GameScreen(
-                                dimension: dimension,
-                                level: level,
+                    return FutureBuilder(
+                      future: getScore(widget.dimension, level),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<int> snapshot) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Container();
+                          case ConnectionState.active:
+                          case ConnectionState.waiting:
+                            return Container();
+                          case ConnectionState.done:
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 4,
                               ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: 60.0,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            color: Colors.pink[400], // Theme.of(context).buttonColor,
-                          ),
-                          child: Center(
-                            child: Text(
-                              level.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GameScreen(
+                                        dimension: widget.dimension,
+                                        level: level,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 60.0,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5)),
+                                    color: Colors.pink[
+                                        snapshot.data == null ? 300 : 500],
+                                  ),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Center(
+                                        child: Text(
+                                          level.toString(),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                      snapshot.data != null
+                                          ? Align(
+                                              alignment: Alignment.bottomRight,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Text(
+                                                  snapshot.data.toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.white70,
+                                                    fontSize: 12
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : Container()
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ),
+                            );
+                        }
+                        return Container();
+                      },
                     );
                   }).toList()),
             ),

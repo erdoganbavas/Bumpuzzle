@@ -38,9 +38,9 @@ class Shape {
 
   }
 
-  /// builds 4 pieces according to a selected random shape
+  /// builds and return array of 4 pieces according to selected random shape
   List<Piece> getPieces() {
-    // TODO: level a göre piece seç
+    // TODO: select piece based on level
 
     switch (pieceType) {
       case PieceType.Round:

@@ -12,7 +12,7 @@ class Square extends Piece {
 
   @override
   Widget pieceShapeWidget() {
-    return SquareWidget(this);
+    return SquareWidget(square: this);
   }
 
   @override
@@ -61,8 +61,7 @@ class Square extends Piece {
 class SquareWidget extends StatefulWidget {
   final Square square;
 
-  // TODO: const olmalı mı???????
-  SquareWidget(this.square);
+  const SquareWidget({Key key, Square this.square}): super(key: key);
 
   @override
   _SquareWidgetState createState() => _SquareWidgetState();
