@@ -1,11 +1,13 @@
 import 'dart:math';
+//import 'dart:mirrors';
 
 import 'package:flutter/material.dart';
 import 'package:puzzle/models/piece.dart';
 import 'package:puzzle/models/pieces/round.dart';
 import 'package:puzzle/models/pieces/square.dart';
+import 'package:puzzle/models/pieces/zebra-round.dart';
 
-enum PieceType { Round, Square }
+enum PieceType { Round, Square, ZebraRound }
 
 class Shape {
   static final List<Color> shapeColors = [
@@ -28,52 +30,35 @@ class Shape {
   final int index;
   final int dimension;
   final int level;
-  PieceType pieceType;
+
+  Function pieceBuilder;
   Color color;
 
   Shape(this.index, this.dimension, this.level){
-
-    pieceType = getPieceType();
+    pieceBuilder = getPieceBuilder();
     color = getColor(index);
-
   }
 
   /// builds and return array of 4 pieces according to selected random shape
   List<Piece> getPieces() {
-    // TODO: select piece based on level
-
-    switch (pieceType) {
-      case PieceType.Round:
-        return [
-          Round(pieceIndex: 1, shapeIndex: index)..setColor(color),
-          Round(pieceIndex: 2, shapeIndex: index)..setColor(color),
-          Round(pieceIndex: 3, shapeIndex: index)..setColor(color),
-          Round(pieceIndex: 4, shapeIndex: index)..setColor(color),
-        ];
-      case PieceType.Square:
-        return [
-          Square(pieceIndex: 1, shapeIndex: index)..setColor(color),
-          Square(pieceIndex: 2, shapeIndex: index)..setColor(color),
-          Square(pieceIndex: 3, shapeIndex: index)..setColor(color),
-          Square(pieceIndex: 4, shapeIndex: index)..setColor(color),
-        ];
-      default:
-        return [
-          Round(pieceIndex: 1, shapeIndex: index)..setColor(color),
-          Round(pieceIndex: 2, shapeIndex: index)..setColor(color),
-          Round(pieceIndex: 3, shapeIndex: index)..setColor(color),
-          Round(pieceIndex: 4, shapeIndex: index)..setColor(color),
-        ];
-    }
+    return [
+      pieceBuilder(pieceIndex: 1, shapeIndex: index)..setColor(color),
+      pieceBuilder(pieceIndex: 2, shapeIndex: index)..setColor(color),
+      pieceBuilder(pieceIndex: 3, shapeIndex: index)..setColor(color),
+      pieceBuilder(pieceIndex: 4, shapeIndex: index)..setColor(color),
+    ];
   }
 
   static Color getColor(int index) {
     return shapeColors[index % shapeColors.length];
   }
 
-  PieceType getPieceType() {
+  Function getPieceBuilder() {
+    // TODO: select piece based on level
+
+    List<Function> list = [Square.build, Round.build, ZebraRound.build];
     var rng = new Random();
-    return rng.nextInt(10) > 5 ? PieceType.Round : PieceType.Square;
+    return list[rng.nextInt(list.length)];
   }
 }
 

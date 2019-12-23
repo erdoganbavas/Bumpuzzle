@@ -10,6 +10,10 @@ import '../piece.dart';
 class Square extends Piece {
   Square({pieceIndex, shapeIndex}) : super(pieceIndex:pieceIndex, shapeIndex:shapeIndex);
 
+  static Square build({pieceIndex, shapeIndex}) {
+    return Square(pieceIndex: pieceIndex, shapeIndex: shapeIndex);
+  }
+
   @override
   Widget pieceShapeWidget() {
     return SquareWidget(square: this);

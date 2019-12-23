@@ -9,6 +9,10 @@ class Round extends Piece {
   Round({pieceIndex, shapeIndex})
       : super(pieceIndex: pieceIndex, shapeIndex: shapeIndex);
 
+  static Round build({pieceIndex, shapeIndex}) {
+    return Round(pieceIndex: pieceIndex, shapeIndex: shapeIndex);
+  }
+
   @override
   Widget pieceShapeWidget() {
     return RoundWidget(this);
