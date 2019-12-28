@@ -7,21 +7,22 @@ import 'package:vector_math/vector_math.dart' hide Colors;
 
 import '../piece.dart';
 
-class Square extends Piece {
-  Square({pieceIndex, shapeIndex}) : super(pieceIndex:pieceIndex, shapeIndex:shapeIndex);
+class ZebraSquare extends Piece {
+  ZebraSquare({pieceIndex, shapeIndex})
+      : super(pieceIndex: pieceIndex, shapeIndex: shapeIndex);
 
-  static Square build({pieceIndex, shapeIndex}) {
-    return Square(pieceIndex: pieceIndex, shapeIndex: shapeIndex);
+  static ZebraSquare build({pieceIndex, shapeIndex}) {
+    return ZebraSquare(pieceIndex: pieceIndex, shapeIndex: shapeIndex);
   }
 
   @override
   Widget pieceShapeWidget() {
-    return SquareWidget(square: this);
+    return ZebraSquareWidget(square: this);
   }
 
   @override
   bool isNeighborPieceFit(Vector2 neighborVector, Piece neighborPiece) {
-    if(neighborPiece.shapeIndex != shapeIndex) return false; // not same shape
+    if (neighborPiece.shapeIndex != shapeIndex) return false; // not same shape
 
     // square doesn't matter which piece
     return true;
@@ -39,10 +40,7 @@ class Square extends Piece {
       Vector gridPosition = getGridPosition();
 
       int neighborIndex = GridHelper.getFlattenedIndexOfNeighbor(
-          game.dimension,
-          gridPosition,
-          neighborVector
-      );
+          game.dimension, gridPosition, neighborVector);
 
       if (neighborIndex != null) {
         Piece neighborPiece = game.pieces[neighborIndex];
@@ -53,39 +51,54 @@ class Square extends Piece {
       }
     });
 
-    return fittedPieceCount==3;
+    return fittedPieceCount == 3;
   }
 
   @override
   String toString() {
-    return "";//"""S " + super.toString();
+    return "ZS";
   }
 }
 
-class SquareWidget extends StatefulWidget {
-  final Square square;
+class ZebraSquareWidget extends StatefulWidget {
+  final ZebraSquare square;
 
-  const SquareWidget({Key key, Square this.square}): super(key: key);
+  const ZebraSquareWidget({Key key, ZebraSquare this.square}) : super(key: key);
 
   @override
-  _SquareWidgetState createState() => _SquareWidgetState();
+  _ZebraSquareWidgetState createState() => _ZebraSquareWidgetState();
 }
 
-class _SquareWidgetState extends State<SquareWidget> {
+class _ZebraSquareWidgetState extends State<ZebraSquareWidget> {
   double size = 0;
   double borderWidth = 0;
+  List<Color> _colors;
+  List<double> _stops;
 
   @override
   void initState() {
+    _colors = [
+      widget.square.color.withAlpha(200).withRed(255),
+      widget.square.color,
+      widget.square.color,
+      widget.square.color.withAlpha(200).withRed(255),
+      widget.square.color.withAlpha(200).withRed(255),
+      widget.square.color,
+      widget.square.color
+    ];
+    // add a small fraction to overlapping stops, better result on transitions
+    _stops = [1 / 4, 1.01 / 4, 2 / 4, 2.01 / 4, 3 / 4, 3.01 / 4, 4 / 4];
+
     _initListens();
 
-    // set spawn state with a random lateny
+    // set spawn state with a random latency
     Future.delayed(Duration(milliseconds: Random().nextInt(300) + 500), () {
       setSpawnState();
     });
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -97,15 +110,17 @@ class _SquareWidgetState extends State<SquareWidget> {
         child: Text(widget.square.toString()),
         decoration: BoxDecoration(
           color: widget.square.color,
-          border: borderWidth == 0 ? null : Border.all(
-            color: Colors.blueGrey,
-            width: borderWidth
-          )
+          border: borderWidth == 0
+              ? null
+              : Border.all(color: Colors.blueGrey, width: borderWidth),
+          gradient: LinearGradient(
+            colors: _colors,
+            stops: _stops,
+          ),
         ),
       ),
     );
   }
-
 
   // sets spawn variables
   void setSpawnState() {
@@ -122,14 +137,14 @@ class _SquareWidgetState extends State<SquareWidget> {
   }
 
   // piece selected
-  void select(){
+  void select() {
     setState(() {
       borderWidth = 3;
     });
   }
 
   // piece deselected
-  void deselect(){
+  void deselect() {
     setState(() {
       borderWidth = 0;
     });
@@ -146,15 +161,17 @@ class _SquareWidgetState extends State<SquareWidget> {
     });
 
     // listen model's commands
-    widget.square.widgetCommander.listen((command){
-      switch(command){
-        case "select":{
-          select();
-        }
-        break;
-        case "deselect":{
-          deselect();
-        }
+    widget.square.widgetCommander.listen((command) {
+      switch (command) {
+        case "select":
+          {
+            select();
+          }
+          break;
+        case "deselect":
+          {
+            deselect();
+          }
       }
     });
   }
