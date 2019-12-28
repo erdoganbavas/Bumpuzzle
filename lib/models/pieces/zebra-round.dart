@@ -46,7 +46,7 @@ class ZebraRound extends Piece {
 
   @override
   String toString() {
-    return "ZZZZ";
+    return "";
   }
 
   BorderRadius getCornerRadius() {
@@ -107,7 +107,8 @@ class _ZebraRoundWidgetState extends State<ZebraRoundWidget> {
       widget.round.color,
       widget.round.color
     ];
-    _stops = [1 / 4, 1 / 4, 2 / 4, 2 / 4, 3 / 4, 3 / 4, 4 / 4];
+    // add a small fraction to overlapping stops, better result on transitions
+    _stops = [1 / 4, 1.01 / 4, 2 / 4, 2.01 / 4, 3 / 4, 3.01 / 4, 4 / 4];
 
     _initListens();
 
