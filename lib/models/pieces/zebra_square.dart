@@ -56,7 +56,7 @@ class ZebraSquare extends Piece {
 
   @override
   String toString() {
-    return "ZS";
+    return "";
   }
 }
 
