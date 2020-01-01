@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:puzzle/helpers/score_helper.dart';
 import 'package:puzzle/screens/game/game_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,13 +14,6 @@ class GridList extends StatefulWidget {
 
 class _GridListState extends State<GridList> {
   final List<int> _levels = List.generate(4, (i) => i + 1);
-
-  Future<int> getScore(dimension, level) async {
-    String key = dimension.toString() + "-" + level.toString();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    return prefs.getInt(key);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +65,7 @@ class _GridListState extends State<GridList> {
                   children: _levels.map((level) {
                     // CELL
                     return FutureBuilder(
-                      future: getScore(widget.dimension, level),
+                      future: ScoreHelper.getScore(widget.dimension, level),
                       builder:
                           (BuildContext context, AsyncSnapshot<int> snapshot) {
                         switch (snapshot.connectionState) {

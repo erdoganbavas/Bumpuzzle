@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:puzzle/helpers/grid_helper.dart';
+import 'package:puzzle/helpers/score_helper.dart';
 import 'package:puzzle/helpers/size_helper.dart';
 import 'package:puzzle/models/piece.dart';
 import 'package:puzzle/models/shape.dart';
@@ -183,8 +184,18 @@ class Game {
     }
   }
 
-  void endGame() {
+  /// ends game. changes status. saves score
+  void endGame() async {
+    // TODO: add this to UI
     print("game end");
+
+    // save score if
+    bool isRecord = await ScoreHelper.setScore(dimension, level, swapCount);
+    if(isRecord){
+      // TODO: add this to UI
+      print("High score! Saved");
+    }
+
     setGameStatus(GameStatus.Ended);
   }
 
