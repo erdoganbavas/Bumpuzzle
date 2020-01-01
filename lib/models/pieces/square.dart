@@ -65,7 +65,7 @@ class Square extends Piece {
 class SquareWidget extends StatefulWidget {
   final Square square;
 
-  const SquareWidget({Key key, Square this.square}): super(key: key);
+  const SquareWidget({Key key, this.square}): super(key: key);
 
   @override
   _SquareWidgetState createState() => _SquareWidgetState();

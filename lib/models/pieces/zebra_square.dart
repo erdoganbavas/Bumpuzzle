@@ -63,7 +63,7 @@ class ZebraSquare extends Piece {
 class ZebraSquareWidget extends StatefulWidget {
   final ZebraSquare square;
 
-  const ZebraSquareWidget({Key key, ZebraSquare this.square}) : super(key: key);
+  const ZebraSquareWidget({Key key, this.square}) : super(key: key);
 
   @override
   _ZebraSquareWidgetState createState() => _ZebraSquareWidgetState();
