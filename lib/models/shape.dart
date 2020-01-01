@@ -1,11 +1,11 @@
 import 'dart:math';
-//import 'dart:mirrors';
 
 import 'package:flutter/material.dart';
 import 'package:puzzle/models/piece.dart';
 import 'package:puzzle/models/pieces/round.dart';
 import 'package:puzzle/models/pieces/square.dart';
 import 'package:puzzle/models/pieces/zebra-round.dart';
+import 'package:puzzle/models/pieces/zebra_square.dart';
 
 enum PieceType { Round, Square, ZebraRound }
 
@@ -53,12 +53,11 @@ class Shape {
     return shapeColors[index % shapeColors.length];
   }
 
+  /// returns a piece builder based on level
   Function getPieceBuilder() {
-    // TODO: select piece based on level
-
-    List<Function> list = [Square.build, Round.build, ZebraRound.build];
+    List<Function> list = [Square.build, Round.build, ZebraRound.build, ZebraSquare.build];
     var rng = new Random();
-    return list[rng.nextInt(list.length)];
+    return list[rng.nextInt(list.length) % level];
   }
 }
 
