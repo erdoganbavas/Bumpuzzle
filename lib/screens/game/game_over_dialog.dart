@@ -32,7 +32,7 @@ class _GameOverDialogState extends State<GameOverDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (_show) {
+    if (!_show) {
       return Container();
     }
 
