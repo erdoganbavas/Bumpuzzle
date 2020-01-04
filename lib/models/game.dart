@@ -17,6 +17,9 @@ class Game {
   /// count of swaps on board
   int swapCount = 0;
 
+  /// is game ended with a high score
+  bool isHighScore;
+
   /// status of game
   GameStatus status = GameStatus.Inited;
 
@@ -33,7 +36,6 @@ class Game {
   StreamController<GameStatus> _gameStatusController =
   StreamController<GameStatus>.broadcast();
   Stream<GameStatus> get gameStatusStream => _gameStatusController.stream;
-
 
   /// stream game state changes
   StreamController<int> _swapCountStreamController =
@@ -186,13 +188,11 @@ class Game {
 
   /// ends game. changes status. saves score
   void endGame() async {
-    // TODO: add this to UI
     print("game end");
 
     // save score if
-    bool isRecord = await ScoreHelper.setScore(dimension, level, swapCount);
-    if(isRecord){
-      // TODO: add this to UI
+    isHighScore = await ScoreHelper.setScore(dimension, level, swapCount);
+    if(isHighScore){
       print("High score! Saved");
     }
 

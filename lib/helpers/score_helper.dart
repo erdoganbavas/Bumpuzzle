@@ -14,7 +14,7 @@ class ScoreHelper {
 
     int oldScore = await ScoreHelper.getScore(dimension, level);
 
-    if (oldScore == null || newScore > oldScore) {
+    if (oldScore == null || newScore < oldScore) {
       prefs.setInt(key, newScore);
       return true;
     } else {
