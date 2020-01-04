@@ -23,29 +23,27 @@ class _GameScreenState extends State<GameScreen> {
     game = Game(widget.level, widget.dimension);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: Theme.of(context),
-      home: GameBuilder(
-        game: game,
-        child: Scaffold(
-          body: Center(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  color: Theme.of(context).backgroundColor,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GameHeader(),
-                      Grid(),
-                    ],
-                  ),
+    return GameBuilder(
+      game: game,
+      child: Scaffold(
+        body: Center(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GameHeader(),
+                    Grid(),
+                  ],
                 ),
-                GameOverDialog()
-              ],
-            ),
+              ),
+              GameOverDialog()
+            ],
           ),
         ),
       ),

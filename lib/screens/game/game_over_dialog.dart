@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:puzzle/models/game.dart';
 import 'package:puzzle/screens/game/game_builder.dart';
 import 'package:puzzle/screens/game/game_screen.dart';
@@ -31,7 +32,7 @@ class _GameOverDialogState extends State<GameOverDialog> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_show) {
+    if (_show) {
       return Container();
     }
 
@@ -51,7 +52,15 @@ class _GameOverDialogState extends State<GameOverDialog> {
         highScoreText(),
         SimpleDialogOption(
           onPressed: () {
-
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => GameScreen(
+                  dimension: game.dimension,
+                  level: game.level,
+                ),
+              ),
+            );
           },
           child: Center(
             child: Text(
@@ -62,6 +71,7 @@ class _GameOverDialogState extends State<GameOverDialog> {
         ),
         SimpleDialogOption(
           onPressed: () {
+            Navigator.pop(context);
           },
           child: Center(
             child: Text(
