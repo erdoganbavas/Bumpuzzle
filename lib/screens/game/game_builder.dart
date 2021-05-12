@@ -8,7 +8,7 @@ class GameBuilder extends InheritedWidget{
   GameBuilder({this.child, this.game}) : super(child: child);
 
   static GameBuilder of(BuildContext context) {
-    return context.inheritFromWidgetOfExactType(GameBuilder) as GameBuilder;
+    return context.dependOnInheritedWidgetOfExactType<GameBuilder>();
   }
 
   @override
