@@ -27,7 +27,7 @@ class SizeHelper{
 
   SizeHelper._internal(this.context){
     width = MediaQuery.of(context).size.width;
-    height = MediaQuery.of(context).size.height;
+    height = MediaQuery.of(context).size.height.floorToDouble();
   }
 
   /*
@@ -44,7 +44,6 @@ class SizeHelper{
 
   /// Game body height
   double bodyHeight(){
-    // print("$height - ($headerHeight + (2*$headerVerticalPadding))");
     return height - (headerHeight + (2*headerVerticalPadding));
   }
 
@@ -59,7 +58,7 @@ class SizeHelper{
       baseWidth = bodyHeight() - 2*_gridSideMinPadding;
     }
 
-    return baseWidth;
+    return baseWidth.floorToDouble() ;
   }
 
   /*

@@ -108,7 +108,7 @@ class Game {
 
   /// pieces / cells one side's size
   double getCellSize() {
-    return _sizeHelper.gridSide() / dimension;
+    return (_sizeHelper.gridSide() / dimension).floorToDouble();
   }
 
   /// checks if all pieces are correctly positioned
